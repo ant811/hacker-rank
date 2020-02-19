@@ -1,0 +1,26 @@
+{
+  "name": "hacker-rank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": { "testEnvironment": "node" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ant811/hacker-rank.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ant811/hacker-rank/issues"
+  },
+  "homepage": "https://github.com/ant811/hacker-rank#readme",
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
