@@ -1,3 +1,5 @@
+// HackerRank Level of Difficulty - Medium
+
 function isValid(s) {
   const charFrequencies = {};
   s.split('').forEach(letter => {
