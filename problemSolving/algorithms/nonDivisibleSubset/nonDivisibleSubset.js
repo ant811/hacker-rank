@@ -1,63 +1,26 @@
 // HackerRank Level of Difficulty - Medium
 
-// NOTE - My solution does not pass all HackerRank tests
-//      - Current solution score is 9.3 out of 20
-//      - I need to improve time complexity to pass all tests
-
-const findAllPermutations = (array) => {
-  const permutations = [[]];
-  for (let i = 0; i < array.length; i++) {
-    const temp = [...permutations];
-    for (let j = 0; j < temp.length; j++) {
-      permutations.push(temp[j].concat(array[i]));
-    }
-  }
-  permutations.shift();
-  return permutations;
-};
-
-const findAllTuples = (array) => {
-  const tuples = [];
-  for(let i = 0; i < array.length; i++) {
-    for(let j = i + 1; j < array.length; j++) {
-      tuples.push([array[i], array[j]]);
-    }
-  }
-  return tuples;
-}
-
-const findInvalidTuples = (touples, target) => {
-  return touples.filter(touple => {
-    return (touple[0] + touple[1]) % target === 0;
-  })
-}
-
-const renderInvalidRegExp = (touples) => {
-  return new RegExp(`${touples[0]}.*${touples[1]}|${touples[1]}.*${touples[0]}`);
-}
-
-const findValidPermutations = (permutations, invalidRegExp) => {
-  return permutations.filter(permutation => {
-    return !invalidRegExp.reduce((acc, regExp) => {
-      return acc || regExp.test(permutation.join(''));
-    }, false);
-  });
-};
-
-const findLongestArray = (arrays) => {
-  return arrays.reduce((acc, array) => {
-    return array.length > acc ? array.length : acc;
-  }, 0);
-};
-
 function nonDivisibleSubset(k, s) {
-  const allPermutations = findAllPermutations(s);
-  const allTuples = findAllTuples(s);
-  const invalidTuples = findInvalidTuples(allTuples, k);
-  const allInvalidRegExp = invalidTuples.map(renderInvalidRegExp);
-  const validPermutations = findValidPermutations(allPermutations, allInvalidRegExp);
-  const longestPermutationLength = findLongestArray(validPermutations);
-  return longestPermutationLength;
+  const countSieve = new Array(k).fill(0);
+  for (let i = 0; i < s.length; i++) {
+    countSieve[s[i] % k]+=1;
+  }
+  // Initialize counter, at most only 1 evenly divisible integer of k can be counted
+  let counter = Math.min(countSieve[0], 1);
+  // Only loop through to midpoint at most; each comparison looks at beginning countSieve[i] and end countSieve[k - i] I.e. k = 6 (1, 5), (2, 4)
+  let midPointLimit = Math.floor(k / 2) + 1;
+  for (let i = 1; i < midPointLimit; i++) {
+    if(i !== k - i) {
+      counter+=Math.max(countSieve[i], countSieve[k - i])
+    } else {
+      // if k is even, loop will reach midpoint, at most only one integer s[i] % k = k / 2 can be counted
+      counter+=Math.min(countSieve[i], 1)
+    } 
+  }
+
+  return counter;
 };
+
+// Time complexity: O(n)
 
 module.exports = { nonDivisibleSubset };
